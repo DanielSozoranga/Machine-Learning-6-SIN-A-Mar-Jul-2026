@@ -23,7 +23,7 @@ WORKDIR /app
 
 RUN uv venv .venv
 
-COPY requirements.txt ,
+COPY requirements.txt .
 
 RUN uv pip install --python .venv/bin/python -r requirements.txt
 
