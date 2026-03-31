@@ -1,7 +1,7 @@
 {
-"name": "ML Workshop 2 - Work Enviroment",
-
-"build": {
+    "name": "ML Workshop 2 - Work Environment",
+    
+    "build": {
       "dockerfile": "Dockerfile"
     },
     
@@ -11,15 +11,14 @@
           //format: publisher.extensionName
           "ms-python.python", 
           "ms-toolsai.jupyter", 
-        
           "ms-toolsai.jupyter-renderers", 
           // Without this extension, DataFrames are displayed as plain
           "charliermarsh.ruff", // Extremely fast Python linter and fo
           "ms-azuretools.vscode-containers" // Visualize containers an
         ],
         "settings": {
-        // Without this line, VS Code would use the system's Python interpreter.
-          "python.defaultInterpreterPath": "/app/.venv/bin/python",
+          // Without this line, VS Code would use the system's Python interpreter.
+          "python.defaultInterpreterPath": "/app/ds/bin/python",
           // Sets the working directory of the notebooks.
           // In this case the root path of the repository
           "jupyter.notebookFileRoot": "${workspaceFolder}"
@@ -27,5 +26,5 @@
       }
     },
     
-    "postCreateCommand": "echo 'source /app/.venv/bin/activate' >> ~/.bashrc"
+    "postCreateCommand": "echo 'source /app/ds/bin/activate' >> ~/.bashrc"
 }
