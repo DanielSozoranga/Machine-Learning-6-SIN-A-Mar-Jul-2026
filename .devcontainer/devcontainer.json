@@ -1,30 +1,47 @@
 {
-    "name": "ML Workshop 2 - Work Environment",
-    
-    "build": {
-      "dockerfile": "Dockerfile"
-    },
-    
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          //format: publisher.extensionName
-          "ms-python.python", 
-          "ms-toolsai.jupyter", 
-          "ms-toolsai.jupyter-renderers", 
-          // Without this extension, DataFrames are displayed as plain
-          "charliermarsh.ruff", // Extremely fast Python linter and fo
-          "ms-azuretools.vscode-containers" // Visualize containers an
+  "name": "DS Final ML — Linear & Logistic Regression",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-renderers",
+        "ms-toolsai.jupyter-keymap",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "jupyter.kernels.filter": [
+          { "path": "/workspace/.venv/bin/python", "type": "pythonEnvironment" }
         ],
-        "settings": {
-          // Without this line, VS Code would use the system's Python interpreter.
-          "python.defaultInterpreterPath": "/app/ds/bin/python",
-          // Sets the working directory of the notebooks.
-          // In this case the root path of the repository
-          "jupyter.notebookFileRoot": "${workspaceFolder}"
+        "python.terminal.activateEnvironment": true,
+        "workbench.editorAssociations": {
+          "*.ipynb": "jupyter-notebook",
+          "README.md": "vscode.markdown.preview.editor"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
+        },
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/.ipynb_checkpoints": true,
+          "**/.ruff_cache": true
         }
       }
     },
-    
-    "postCreateCommand": "echo 'source /app/ds/bin/activate' >> ~/.bashrc"
+    "codespaces": {
+      "openFiles": [
+        "README.md"
+      ]
+    }
+  },
+  "postCreateCommand": "echo '' && echo '════════════════════════════════════════════════════════════' && echo '  ✅ DS Final ML — DevContainer listo' && echo '════════════════════════════════════════════════════════════' && echo '  • Venv:    /workspace/.venv  (128 paquetes pinneados)' && echo '  • Kernel:  Python 3.12 (DS Final ML)' && echo '' && echo '  → Abre notebooks/main.ipynb desde el Explorer y Run All' && echo '════════════════════════════════════════════════════════════' && echo ''",
+  "remoteUser": "root",
+  "forwardPorts": [8888]
 }
