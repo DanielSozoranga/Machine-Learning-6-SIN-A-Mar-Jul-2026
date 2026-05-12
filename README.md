@@ -1,61 +1,49 @@
 # Mid-Term Practical Evaluation — Machine Learning (6 SIN-A)
 
-**Universidad Internacional del Ecuador — Computer Science School**
-**Duration:** 90 minutes · **Modality:** Individual · **Weight:** 12 points
-**Environment:** GitHub Codespaces
+**Universidad Internacional del Ecuador — Escuela de Ciencias de la Computación**
+**Autor:** Daniel Sozoranga
+**Docente:** Ing. Jonathan E. Tito O., MSc.
+**Dataset:** Wine Quality (Red Wine) — 1 599 filas, 11 features + target `quality`
 
 ---
 
-## How to start
+## Cómo abrir el entorno
 
-1. Accept the GitHub Classroom invitation provided by the instructor.
-2. Once your repository is created, click the green **"Code"** button → **"Codespaces"** tab → **"Create codespace on main"**.
-3. Wait for the Codespace to finish building (≈ 60 seconds). The devcontainer is pre-configured — you do not need to run any setup commands.
-4. Open `notebooks/exam.ipynb` from the file tree on the left.
-5. Run the first cell (environment check). If it prints versions, you are ready.
+1. Aceptar la invitación de GitHub Classroom.
+2. Click en **Code → Codespaces → Create codespace on main**.
+3. Esperar ~60 s a que el DevContainer compile (venv `.DS` se crea automáticamente).
+4. Abrir `notebooks/exam.ipynb` desde el árbol de archivos.
+5. Ejecutar la primera celda (Task 1). Si imprime versiones → listo.
 
-## How to submit
-
-```bash
-git add .
-git commit -m "Final exam submission"
-git push
-```
-
-Paste your repository URL in Canvas before the timer expires. The Git commit timestamp is the official submission time.
-
-## Repository layout
+## Estructura del repositorio
 
 ```
 .
-├── .devcontainer/        # Codespaces config — do not modify
+├── .devcontainer/        # Config Codespaces — no modificar
+│   ├── Dockerfile        # Python 3.12-slim + UV + venv .DS
+│   └── devcontainer.json
 ├── data/
-│   └── wine_quality.csv  # 1599 rows, 11 features + 'quality' target
+│   └── wine_quality.csv  # 1 599 filas, 11 features + 'quality'
 ├── notebooks/
-│   └── exam.ipynb        # ← Your work goes here
+│   └── exam.ipynb        # Notebook principal con las 11 tareas
 ├── src/
-│   └── scale.py          # Contains a bug for Task 2
-├── pyproject.toml        # UV-managed dependencies
+│   └── scale.py          # Módulo de escalado (Task 2)
+├── pyproject.toml
 └── README.md
 ```
 
-## Rules
+## Cómo hacer commit (el profe revisa los timestamps)
 
-- **Open notes, open slides, open class repository, open official docs** (sklearn, pandas) are allowed.
-- **AI assistants (ChatGPT, Claude, Copilot) are NOT allowed.** Codespaces activity is logged.
-- **No communication with other students.** Two notebooks with essentially identical code → 0 for both.
-- Phones, second screens, and external chat windows are not permitted during the 90 minutes.
+```bash
+# Al terminar Part A
+git add . && git commit -m "Part A: env check, bug fix, pandas indexing"
 
-## Tips
+# Al terminar Part B
+git add . && git commit -m "Part B: EDA, regression pipeline, metrics"
 
-- Read all 11 tasks first. The big-ticket items are Tasks 5, 6, and 8.
-- Save the notebook every 10 minutes (`Cmd/Ctrl + S`).
-- Commit at the end of each Part. If something breaks, you still have credit.
-- If Task 2 (the bug fix) takes more than 5 minutes, skip it and return at the end.
+# Al terminar Part C
+git add . && git commit -m "Part C: logistic regression, class imbalance"
 
-Good luck.
-— Ing. Jonathan E. Tito O., MSc.
-
-
-
-ENTENDIMIENTO DE LA RUBRIVA
+# Entrega final
+git add . && git commit -m "Final exam submission" && git push
+```

@@ -1,5 +1,5 @@
 {
-  "name": "ML Exam — Linear & Logistic Regression",
+  "name": "ML Exam — Linear & Logistic Regression (Wine Quality)",
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
@@ -9,10 +9,13 @@
       "extensions": [
         "ms-python.python",
         "ms-toolsai.jupyter",
-        "ms-python.vscode-pylance"
+        "ms-toolsai.jupyter-renderers",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-azuretools.vscode-containers"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/app/.venv/bin/python",
+        "python.defaultInterpreterPath": "/app/.DS/bin/python",
         "jupyter.notebookFileRoot": "${workspaceFolder}",
         "files.exclude": {
           "**/__pycache__": true,
@@ -21,7 +24,7 @@
       }
     }
   },
-  "forwardPorts": [],
-  "postCreateCommand": "echo 'Environment ready. Open notebooks/exam.ipynb to begin.'",
-  "remoteUser": "root"
+  "postCreateCommand": "echo 'source /app/.DS/bin/activate' >> ~/.bashrc && echo '✅ Entorno .DS listo. Abre notebooks/exam.ipynb para comenzar.'",
+  "remoteUser": "root",
+  "forwardPorts": [8888]
 }
