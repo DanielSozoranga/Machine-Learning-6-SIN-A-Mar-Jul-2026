@@ -15,9 +15,9 @@
         "tamasfe.even-better-toml"
       ],
       "settings": {
-        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "python.defaultInterpreterPath": "/workspace/ds/bin/python",
         "jupyter.kernels.filter": [
-          { "path": "/workspace/.venv/bin/python", "type": "pythonEnvironment" }
+          { "path": "/workspace/ds/bin/python", "type": "pythonEnvironment" }
         ],
         "python.terminal.activateEnvironment": true,
         "workbench.editorAssociations": {
@@ -36,12 +36,10 @@
       }
     },
     "codespaces": {
-      "openFiles": [
-        "README.md"
-      ]
+      "openFiles": []
     }
   },
-  "postCreateCommand": "echo '' && echo '════════════════════════════════════════════════════════════' && echo '  ✅ DS Final ML — DevContainer listo' && echo '════════════════════════════════════════════════════════════' && echo '  • Venv:    /workspace/.venv  (128 paquetes pinneados)' && echo '  • Kernel:  Python 3.12 (DS Final ML)' && echo '' && echo '  → Abre notebooks/main.ipynb desde el Explorer y Run All' && echo '════════════════════════════════════════════════════════════' && echo ''",
+  "postCreateCommand": "echo '[ -f /workspace/ds/bin/activate ] && source /workspace/ds/bin/activate' >> /root/.bashrc && echo '' && echo '════════════════════════════════════════════════════════════' && echo '  ✅ DS Final ML — DevContainer listo' && echo '════════════════════════════════════════════════════════════' && echo '  • Venv:    /workspace/ds  (auto-activado en cada terminal)' && echo '  • Kernel:  Python 3.12 (DS Final ML)' && echo '' && echo '  → Abre notebooks/main.ipynb desde el Explorer y Run All' && echo '════════════════════════════════════════════════════════════' && echo ''",
   "remoteUser": "root",
   "forwardPorts": [8888]
 }

@@ -1,12 +1,14 @@
 [project]
 name = "ds-final-ml"
 version = "1.0.0"
-description = "Final Project ML 6 SIN-A — Linear & Logistic Regression on California Housing (UIDE)"
-authors = [{ name = "Daniel Sozoranga", email = "daniel.sozoranga@uide.edu.ec" }]
+description = "Linear & Logistic Regression on California Housing"
+authors = [{ name = "Daniel Sozoranga" }]
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 license = { text = "MIT" }
 
+# Stack del pipeline principal. Rangos `>=X,<MAYOR+1` para permitir parches
+# y minor releases sin romper la API; `uv.lock` pinea las versiones exactas.
 dependencies = [
     "pandas>=2.2,<4.0",
     "numpy>=1.26,<3.0",
@@ -19,17 +21,16 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Bonus: implementación desde cero con JAX + ingesta con Polars.
-# Cubre las herramientas que el profe mencionó en clase (JAX, Polars).
-# El notebook detecta defensivamente si jax/polars están instalados y
-# corre/omite el bonus en consecuencia. Por defecto SÍ se instalan
-# (el Dockerfile incluye `[bonus]` para que el notebook corra completo).
+# Extras del bonus: reimplementación desde cero con autodiff (JAX + Optax)
+# e ingesta lazy con Polars. El notebook detecta su presencia mediante
+# try/except y omite las celdas correspondientes si no están instaladas.
 bonus = [
     "jax[cpu]>=0.4.30,<0.6.0",
     "optax>=0.2.2,<0.3.0",
     "polars>=1.5.0,<2.0",
 ]
 
+# Herramientas de calidad de código (no instaladas en el container).
 dev = [
     "ruff>=0.6",
 ]
