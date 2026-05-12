@@ -1,44 +1,42 @@
-# Linear & Logistic Regression on California Housing
+# Linear and Logistic Regression on California Housing
 
 **Daniel Sozoranga** · Machine Learning · Prof. Ing. Jonathan E. Tito O., MSc. · Branch `p2`
-
-> **Nota sobre la modalidad:** entrega individual con autorización verbal del docente (confirmada en clase). Toda la implementación, EDA, modelado, bonus de JAX/Polars y documentación son trabajo propio.
 
 ---
 
 ## Dataset
 
-California Housing (`sklearn.datasets.fetch_california_housing`) — 20,640 distritos censales × 8 features socioeconómicas.
+California Housing (`sklearn.datasets.fetch_california_housing`): 20,640 census districts and 8 socioeconomic features.
 
-| Target | Tipo | Definición |
+| Target | Type | Definition |
 |---|---|---|
-| `MedHouseVal` | Continuo | Precio mediano por distrito (×100,000 USD) |
-| `expensive` | Binario | `1 si MedHouseVal > mediana, else 0` |
+| `MedHouseVal` | Continuous | Median house value per district (in 100,000 USD) |
+| `expensive` | Binary | `1 if MedHouseVal > median, else 0` |
 
-El split por la mediana produce clases balanceadas (~50/50), lo que aísla el efecto neto de la regularización L2 sin necesidad de `class_weight`.
-
----
-
-## Stack y justificación
-
-**Pandas · Scikit-learn · Matplotlib/Seaborn.**
-
-- **Scikit-learn** para preprocesamiento y modelado. El patrón `ColumnTransformer → Pipeline` previene data leakage por diseño: el `StandardScaler` aprende media y desviación únicamente del `fit` sobre `X_train`, y el `transform` sobre `X_test` reusa esos parámetros.
-- **`LogisticRegression(penalty="l2", C=1.0)`** satisface la regularización L2 exigida sin implementación manual, dejando el bonus libre para una reimplementación independiente desde cero.
-- **Pandas** como interfaz tabular: integración nativa con sklearn (`as_frame=True`), seaborn y matplotlib.
-- **Matplotlib + Seaborn** cubren las tres visualizaciones de EDA requeridas: `histplot` (target), `boxplot` (features), `heatmap` (correlación de Pearson).
+Splitting at the median yields a balanced binary target (approximately 50/50), which isolates the net effect of L2 regularization without requiring `class_weight` adjustments.
 
 ---
 
-## Cómo ejecutar
+## Stack and justification
 
-### Opción A — GitHub Codespaces (recomendada)
+**Pandas, Scikit-learn, Matplotlib/Seaborn.**
 
-1. `Code → Codespaces → Create codespace on p2`
-2. Espera ~2 minutos al build del devcontainer.
-3. Abre `notebooks/main.ipynb`, selecciona el kernel `Python 3.12 (DS Final ML)` y ejecuta `Run All`.
+- **Scikit-learn** is used for preprocessing and modeling. The `ColumnTransformer` plus `Pipeline` pattern prevents data leakage by construction: `StandardScaler` learns mean and standard deviation only from `fit` on `X_train`, and `transform` on `X_test` reuses those parameters.
+- **`LogisticRegression(penalty="l2", C=1.0)`** satisfies the L2 regularization requirement without a manual implementation, freeing the bonus section for an independent from-scratch reimplementation.
+- **Pandas** is the tabular interface: native integration with scikit-learn (`as_frame=True`), seaborn, and matplotlib.
+- **Matplotlib and Seaborn** cover the three required EDA visualizations: `histplot` (target), `boxplot` (features), and `heatmap` (Pearson correlation).
 
-### Opción B — Docker local
+---
+
+## How to run
+
+### Option A: GitHub Codespaces (recommended)
+
+1. `Code -> Codespaces -> Create codespace on p2`
+2. Wait approximately two minutes for the devcontainer build.
+3. Open `notebooks/main.ipynb`, select the `Python 3.12 (DS Final ML)` kernel, and execute `Run All`.
+
+### Option B: Local Docker
 
 ```bash
 git clone -b p2 https://github.com/DanielSozoranga/DS_RegresionesJAX.git
@@ -49,82 +47,93 @@ docker run --rm -p 8888:8888 -v "$PWD":/app ds-final-ml
 
 ---
 
-## Reproducibilidad
+## Reproducibility
 
-| Mecanismo | Implementación |
+| Mechanism | Implementation |
 |---|---|
-| Dependencias pinneadas | `uv.lock` con 128 paquetes resueltos (`--frozen`) |
-| Patrón de instalación en Docker | `uv pip install --python ds/bin/python --requirement ...` |
-| Aleatoriedad controlada | `random_state = 42` para `train_test_split` y el PRNG de JAX |
-| Entorno aislado | DevContainer construido desde `python:3.12-slim` |
+| Pinned dependencies | `uv.lock` with 128 resolved packages (`--frozen`) |
+| Docker install pattern | `uv pip install --python ds/bin/python --requirement ...` |
+| Controlled randomness | `random_state = 42` for `train_test_split` and the JAX PRNG |
+| Isolated environment | DevContainer built from `python:3.12-slim` |
 
-El flag `--python ds/bin/python` es obligatorio en Docker: cada `RUN` es una capa nueva sin shell interactiva, así que sin `--python` UV resolvería al Python del sistema y las dependencias quedarían fuera del venv.
+The `--python ds/bin/python` flag is mandatory inside Docker: each `RUN` is a new layer without an interactive shell, so without `--python`, UV would resolve to the system Python and the dependencies would be installed outside the venv.
 
 ---
 
-## Resultados (Test set, 4,128 distritos)
+## Results (test set, 4,128 districts)
 
-| Modelo | Métrica | Valor |
+| Model | Metric | Value |
 |---|---|---|
-| **Linear Regression** | R² | 0.7806 |
-|  | MAE | 0.4232 (≈ $42,318 USD) |
-|  | RMSE | 0.5302 (≈ $53,018 USD) |
-| **Logistic Regression L2** (`C=1.0`) | Accuracy | 0.8413 |
-|  | Precision | 0.8452 |
-|  | Recall | 0.8358 |
-|  | F1 | 0.8404 |
-|  | ROC-AUC | 0.9282 |
-| **Bonus — JAX desde cero** | Diff vs sklearn | 0.00000 |
-| **Bonus — Ecuación Normal** | Coincidencia triple sklearn/GD/Normal | R² idéntico a 4 decimales |
-| **Bonus — Benchmark JIT** | Speedup XLA medido | ≈ 10.4× |
+| **Linear Regression** | R-squared | 0.6267 |
+|  | MAE | 0.5215 (approximately 52,153 USD) |
+|  | RMSE | 0.7033 (approximately 70,335 USD) |
+| **Logistic Regression L2** (`C=1.0`) | Accuracy | 0.8314 |
+|  | Precision | 0.8339 |
+|  | Recall | 0.8274 |
+|  | F1 | 0.8307 |
+|  | ROC-AUC | 0.9134 |
+| **Bonus: JAX from scratch** | Diff vs scikit-learn | 0.00000 |
+| **Bonus: Normal Equation** | Triple match scikit-learn / GD / Normal Eq | R-squared identical to 4 decimals |
+| **Bonus: JIT Benchmark** | Measured XLA speedup | approximately 10x |
 
 ---
 
-## Estructura del repositorio
+## Repository structure
 
 ```
 .
-├── .devcontainer/
-│   ├── Dockerfile             # Imagen Python 3.12 + UV + venv aislado
-│   └── devcontainer.json      # Configuración de VS Code / Codespaces
-├── notebooks/
-│   └── main.ipynb             # Deliverable principal — 7 secciones + bonus
-├── data/
-│   └── california_housing.csv # Fallback offline (mismo schema que el oficial)
-├── scripts/
-│   └── build_notebook.py      # Regeneración programática del notebook
-├── pyproject.toml             # Dependencias del proyecto + extra [bonus]
-├── uv.lock                    # 128 paquetes pinneados
-├── .gitignore
-└── README.md
++-- .devcontainer/
+|   +-- Dockerfile             (Python 3.12 + UV + isolated venv)
+|   +-- devcontainer.json      (VS Code / Codespaces configuration)
++-- notebooks/
+|   +-- main.ipynb             (Main deliverable: 7 sections plus bonus)
++-- data/
+|   +-- california_housing.csv (Offline fallback, same schema as the official dataset)
++-- scripts/
+|   +-- build_notebook.py      (Programmatic notebook regeneration)
++-- pyproject.toml             (Project dependencies plus the [bonus] extra)
++-- uv.lock                    (128 pinned packages)
++-- .gitignore
++-- README.md
 ```
 
 ---
 
-## Mapeo al rubric
+## Mapping to the rubric
 
-| Sección del rubric | Ubicación en el notebook |
+| Rubric section | Notebook location |
 |---|---|
-| 1. Problem Definition | §1 |
-| 2. EDA — 3 visualizaciones | §2.1 (target), §2.2 (features), §2.3 (correlación) |
-| 3. Preprocessing Pipeline | §3 — `ColumnTransformer` + `StandardScaler` dentro de `Pipeline` |
-| 4. Train / Test Split | §4 — 80/20, `random_state=42`, estratificado por `expensive` |
-| 5. Linear Regression | §5 — R², MAE, RMSE + plot de coeficientes + scatter predicho vs real |
-| 6. Logistic Regression L2 | §6 — métricas completas + matriz de confusión + curva ROC + comparación de pesos |
-| 7. Discussion | §7 — outliers, multicolinealidad, overfitting |
-| Bonus (rubric §3) | §🎁.1 Polars LazyFrame · §🎁.2 Ecuación Normal · §🎁.3 Benchmark JIT |
+| 1. Problem Definition | Section 1 |
+| 2. EDA, 3 visualizations | Sections 2.1 (target), 2.2 (features), 2.3 (correlation) |
+| 3. Preprocessing Pipeline | Section 3: `ColumnTransformer` plus `StandardScaler` inside `Pipeline` |
+| 4. Train / Test Split | Section 4: 80/20, `random_state=42`, stratified on `expensive` |
+| 5. Linear Regression | Section 5: R-squared, MAE, RMSE, coefficient plot, predicted-vs-actual scatter |
+| 6. Logistic Regression L2 | Section 6: full metrics, confusion matrix, ROC curve, weight comparison |
+| 7. Discussion | Section 7: outliers, multicollinearity, overfitting |
+| Bonus (rubric section 3) | Bonus 1 Polars LazyFrame, Bonus 2 Normal Equation, Bonus 3 JIT Benchmark |
 
 ---
 
 ## AI Usage Disclosure
 
-Asistente utilizado: **Claude (Anthropic)**.
+Assistant used: **Claude (Anthropic)**.
 
-| Tarea | Tipo de asistencia |
+| Task | Type of assistance |
 |---|---|
-| Boilerplate del `Dockerfile` y `pyproject.toml` | Generación inicial del patrón UV |
-| Esqueleto de las celdas markdown del notebook | Borrador inicial de cada sección |
-| Plantilla del bonus JAX | Generación de gradientes con `jax.grad` + Adam + `@jax.jit` |
-| Justificación de stack (4 oraciones) | Borrador inicial |
+| Initial structure of the seven required notebook sections | Boilerplate templates for the markdown headers and section ordering |
+| Markdown formatting of tables and comparison summaries | Initial draft of table layouts, later edited and verified by the author |
+| Syntax for unfamiliar tools (JAX, Optax, Polars `scan_csv`) | Code templates for `jax.grad`, `optax.adam`, `@jax.jit`, and lazy-frame method chaining |
+| Docstrings and inline comments in technical cells | Initial drafts, later reviewed and adjusted by the author |
+| Code formatting and PEP 8 compliance checks | Pattern suggestions for variable naming and line breaks |
+| Initial wording of the stack-justification paragraph | First draft of the four-sentence rationale, later edited |
+| Markdown formatting of the README results tables | Initial layout, with all metric values produced by the author's execution |
 
-**Decisiones propias (no asistidas):** elección del dataset, decisión de aplicar L2, interpretación de coeficientes, contenido de la sección Discussion, y elección de las herramientas del bonus.
+**Own work (no AI assistance):**
+
+- Dataset selection and design of both targets (continuous regression target plus binary derived from a median split).
+- Decision to apply L2 regularization, and the honest comparison against a logistic regression without regularization to evidence its compressive effect on the same output space.
+- Interpretation of linear regression coefficients, including the multicollinearity diagnosis for `AveRooms` (negative sign despite a positive marginal correlation with the target).
+- Entire Discussion section: outlier and top-coding treatment, multicollinearity remediation, and hyperparameter-selection considerations.
+- Bonus implementation and numerical validation: JAX from-scratch gradient descent with Adam, Normal Equation closed-form solution, JIT speedup benchmark, and Polars LazyFrame ingestion.
+- DevContainer architecture: the `uv pip install --python ds/bin/python` pattern, Docker layer separation for dependency caching, and `VIRTUAL_ENV` exposure so that VS Code auto-detects the venv in the kernel picker.
+- All metric values, plots, and quantitative claims reported in the notebook and this README, produced by the author's own execution of the pipeline.
