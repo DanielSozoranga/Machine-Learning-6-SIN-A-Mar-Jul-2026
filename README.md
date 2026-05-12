@@ -2,6 +2,8 @@
 
 **Daniel Sozoranga** · Machine Learning · Prof. Ing. Jonathan E. Tito O., MSc. · Branch `p2`
 
+> **Nota sobre la modalidad:** entrega individual con autorización verbal del docente (confirmada en clase). Toda la implementación, EDA, modelado, bonus de JAX/Polars y documentación son trabajo propio.
+
 ---
 
 ## Dataset
@@ -74,7 +76,7 @@ El flag `--python ds/bin/python` es obligatorio en Docker: cada `RUN` es una cap
 |  | ROC-AUC | 0.9282 |
 | **Bonus — JAX desde cero** | Diff vs sklearn | 0.00000 |
 | **Bonus — Ecuación Normal** | Coincidencia triple sklearn/GD/Normal | R² idéntico a 4 decimales |
-| **Bonus — Benchmark JIT** | Speedup XLA medido | ≈ 11× |
+| **Bonus — Benchmark JIT** | Speedup XLA medido | ≈ 10.4× |
 
 ---
 
