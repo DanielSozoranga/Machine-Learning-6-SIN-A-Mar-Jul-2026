@@ -1,30 +1,27 @@
 {
-    "name": "ML Workshop 2 - Work Environment",
-    
-    "build": {
-      "dockerfile": "Dockerfile"
-    },
-    
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          //format: publisher.extensionName
-          "ms-python.python", 
-          "ms-toolsai.jupyter", 
-          "ms-toolsai.jupyter-renderers", 
-          // Without this extension, DataFrames are displayed as plain
-          "charliermarsh.ruff", // Extremely fast Python linter and fo
-          "ms-azuretools.vscode-containers" // Visualize containers an
-        ],
-        "settings": {
-          // Without this line, VS Code would use the system's Python interpreter.
-          "python.defaultInterpreterPath": "/app/ds/bin/python",
-          // Sets the working directory of the notebooks.
-          // In this case the root path of the repository
-          "jupyter.notebookFileRoot": "${workspaceFolder}"
+  "name": "ML Exam — Linear & Logistic Regression",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/app/.venv/bin/python",
+        "jupyter.notebookFileRoot": "${workspaceFolder}",
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/.ipynb_checkpoints": true
         }
       }
-    },
-    
-    "postCreateCommand": "echo 'source /app/ds/bin/activate' >> ~/.bashrc"
+    }
+  },
+  "forwardPorts": [],
+  "postCreateCommand": "echo 'Environment ready. Open notebooks/exam.ipynb to begin.'",
+  "remoteUser": "root"
 }
