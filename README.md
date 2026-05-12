@@ -47,5 +47,3 @@ git add . && git commit -m "Part C: logistic regression, class imbalance"
 # Entrega final
 git add . && git commit -m "Final exam submission" && git push
 ```
-
-"Comit 6"
