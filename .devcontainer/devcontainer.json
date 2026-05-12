@@ -10,26 +10,15 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter",
-        "ms-toolsai.vscode-jupyter-cell-tags",
-        "ms-toolsai.jupyter-keymap",
-        "ms-toolsai.jupyter-renderers",
-        "ms-toolsai.vscode-jupyter-slideshow"
+        "ms-toolsai.jupyter-renderers"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/app/ds/bin/python",
-        "python.terminal.activateEnvInCurrentTerminal": true,
-        "jupyter.notebookFileRoot": "${workspaceFolder}",
-        "jupyter.kernels.filter": [
-          { "path": "/app/ds/bin/python", "type": "pythonEnvironment" }
-        ],
-        "files.exclude": {
-          "**/__pycache__": true,
-          "**/.ipynb_checkpoints": true
-        }
+        "jupyter.notebookFileRoot": "${workspaceFolder}"
       }
     }
   },
-  "postCreateCommand": "echo 'source /app/ds/bin/activate' >> ~/.bashrc && /app/ds/bin/python -m ipykernel install --user --name=ds --display-name='Python 3.12 (ds)' && echo '✅ Kernel ds registrado. Abre notebooks/exam.ipynb y selecciona Python 3.12 (ds).'",
+  "postCreateCommand": "echo 'source /app/ds/bin/activate' >> ~/.bashrc",
   "remoteUser": "root",
   "forwardPorts": [8888]
 }
