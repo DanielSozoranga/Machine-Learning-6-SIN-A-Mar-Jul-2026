@@ -1,10 +1,11 @@
 # syntax=docker/dockerfile:1
 #
 # DevContainer para el notebook de regresión lineal y logística.
-# Patrón UV + flag --python: instala las dependencias dentro de un venv
-# aislado del Python del sistema, requisito para reproducibilidad estricta.
+# Sigue el patrón del workshop de la clase: WORKDIR /app, venv `ds`
+# expuesto vía VIRTUAL_ENV para que VS Code lo detecte automáticamente
+# como entorno virtual en el selector de kernel.
 
-FROM python:3.12-slim AS base
+FROM python:3.12-slim
 
 # Variables de entorno de Python y de la instalación no interactiva:
 #   PYTHONUNBUFFERED         → stdout/stderr sin buffer (logs en tiempo real).
@@ -18,9 +19,7 @@ ENV PYTHONUNBUFFERED=1 \
     UV_LINK_MODE=copy
 
 # Dependencias del sistema. `git` y `ca-certificates` son requeridos por UV
-# para resolver paquetes desde repositorios HTTPS. `curl` queda disponible
-# para diagnósticos. La limpieza de /var/lib/apt/lists reduce el tamaño
-# de la imagen final.
+# para resolver paquetes desde repositorios HTTPS.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl ca-certificates git \
     && rm -rf /var/lib/apt/lists/*
@@ -29,25 +28,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Versión pinneada para garantizar reproducibilidad del resolver.
 COPY --from=ghcr.io/astral-sh/uv:0.5.5 /uv /usr/local/bin/uv
 
-WORKDIR /workspace
+WORKDIR /app
 
 # Capa de dependencias (cacheable). Copiar primero los manifiestos permite
 # que Docker reutilice esta capa en builds posteriores cuando solo cambian
-# los notebooks o el README. El README.md se incluye porque pyproject.toml
-# lo referencia como `readme = "README.md"` y hatchling lo valida al build.
+# los notebooks. README.md se copia porque pyproject.toml lo referencia
+# como `readme = "README.md"` y hatchling lo valida al build.
 COPY pyproject.toml uv.lock README.md ./
 
 # Resolución e instalación de dependencias en tres pasos atómicos:
 #   1. uv export --frozen          → genera requirements.txt desde uv.lock,
 #                                     fallando si lock y pyproject divergen.
 #      --extra bonus               → incluye jax + optax + polars (sección bonus).
-#   2. uv venv ds                  → crea un venv aislado en /workspace/ds.
+#   2. uv venv ds                  → crea un venv aislado en /app/ds.
 #   3. uv pip install --python ... → instala dentro del venv recién creado.
 #                                     El flag --python es obligatorio: sin él,
-#                                     UV resuelve al Python del sistema porque
+#                                     UV resolvería al Python del sistema porque
 #                                     en Docker no hay un venv "activo" entre
-#                                     capas RUN. Sin este flag, las dependencias
-#                                     quedan instaladas fuera de /workspace/ds.
+#                                     capas RUN.
 RUN uv export --frozen --no-hashes --extra bonus -o /tmp/requirements.txt && \
     uv venv ds && \
     uv pip install --python ds/bin/python --no-cache --requirement /tmp/requirements.txt && \
@@ -56,15 +54,17 @@ RUN uv export --frozen --no-hashes --extra bonus -o /tmp/requirements.txt && \
 # Código fuente del proyecto.
 COPY notebooks ./notebooks
 
-# Registro del kernel de Jupyter para que VS Code lo detecte automáticamente
-# al abrir un .ipynb. El nombre `ds-final-ml` debe coincidir con el kernel
-# referenciado en notebooks/main.ipynb (campo metadata.kernelspec).
-RUN ds/bin/python -m ipykernel install --sys-prefix --name ds-final-ml \
-        --display-name "Python 3.12 (DS Final ML)"
+# Exposición del venv al entorno del container:
+#   VIRTUAL_ENV → la extensión Python de VS Code escanea esta variable y
+#                 reconoce el venv como "Virtual Env" en el selector de kernel.
+#   PATH        → resuelve `python`, `pip`, `jupyter` al venv automáticamente,
+#                 sin necesidad de activación manual.
+ENV VIRTUAL_ENV=/app/ds
+ENV PATH="/app/ds/bin:$PATH"
 
-# Comando por defecto: arranca Jupyter Lab sin token ni password, accesible
-# en el puerto 8888 forwardeado por el devcontainer.
-CMD ["ds/bin/jupyter", "lab", \
+# Comando por defecto: Jupyter Lab accesible en el puerto 8888.
+# Como PATH resuelve al venv, `jupyter` apunta al binario correcto.
+CMD ["jupyter", "lab", \
      "--ip=0.0.0.0", "--port=8888", \
      "--no-browser", "--allow-root", \
      "--ServerApp.token=", "--ServerApp.password="]

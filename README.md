@@ -42,7 +42,7 @@ El split por la mediana produce clases balanceadas (~50/50), lo que aísla el ef
 git clone -b p2 https://github.com/DanielSozoranga/DS_RegresionesJAX.git
 cd DS_RegresionesJAX
 docker build -f .devcontainer/Dockerfile -t ds-final-ml . && \
-docker run --rm -p 8888:8888 -v "$PWD":/workspace ds-final-ml
+docker run --rm -p 8888:8888 -v "$PWD":/app ds-final-ml
 ```
 
 ---
