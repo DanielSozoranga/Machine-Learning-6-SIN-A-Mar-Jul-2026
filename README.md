@@ -11,7 +11,7 @@
 
 1. Aceptar la invitación de GitHub Classroom.
 2. Click en **Code → Codespaces → Create codespace on main**.
-3. Esperar ~60 s a que el DevContainer compile (venv `.DS` se crea automáticamente).
+3. Esperar ~60 s a que el DevContainer compile (venv `ds` se crea automáticamente).
 4. Abrir `notebooks/exam.ipynb` desde el árbol de archivos.
 5. Ejecutar la primera celda (Task 1). Si imprime versiones → listo.
 
@@ -20,7 +20,7 @@
 ```
 .
 ├── .devcontainer/        # Config Codespaces — no modificar
-│   ├── Dockerfile        # Python 3.12-slim + UV + venv .DS
+│   ├── Dockerfile        # Python 3.12-slim + UV + venv DS
 │   └── devcontainer.json
 ├── data/
 │   └── wine_quality.csv  # 1 599 filas, 11 features + 'quality'
