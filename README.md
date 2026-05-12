@@ -34,13 +34,15 @@ Splitting at the median yields a balanced binary target (approximately 50/50), w
 
 1. `Code -> Codespaces -> Create codespace on p2`
 2. Wait approximately two minutes for the devcontainer build.
-3. Open `notebooks/main.ipynb`, select the `Python 3.12 (DS Final ML)` kernel, and execute `Run All`.
+3. Open `notebooks/main.ipynb` and click **Run All**.
+4. A kernel picker will appear automatically. Click **Python Environments...**, then select **ds (Python 3.12.13)** `/app/ds/bin/python` (marked as *Recommended*).
+5. The notebook will resume execution with the correct environment.
 
 ### Option B: Local Docker
 
 ```bash
-git clone -b p2 https://github.com/DanielSozoranga/DS_RegresionesJAX.git
-cd DS_RegresionesJAX
+git clone -b p2 https://github.com/DanielSozoranga/Machine-Learning-6-SIN-A-Mar-Jul-2026.git
+cd Machine-Learning-6-SIN-A-Mar-Jul-2026
 docker build -f .devcontainer/Dockerfile -t ds-final-ml . && \
 docker run --rm -p 8888:8888 -v "$PWD":/app ds-final-ml
 ```
@@ -116,17 +118,13 @@ The `--python ds/bin/python` flag is mandatory inside Docker: each `RUN` is a ne
 
 ## AI Usage Disclosure
 
-Assistant used: **Claude (Anthropic)**.
+Assistant used: **Gemini (Google)**.
 
 | Task | Type of assistance |
 |---|---|
 | Initial structure of the seven required notebook sections | Boilerplate templates for the markdown headers and section ordering |
-| Markdown formatting of tables and comparison summaries | Initial draft of table layouts, later edited and verified by the author |
 | Syntax for unfamiliar tools (JAX, Optax, Polars `scan_csv`) | Code templates for `jax.grad`, `optax.adam`, `@jax.jit`, and lazy-frame method chaining |
-| Docstrings and inline comments in technical cells | Initial drafts, later reviewed and adjusted by the author |
 | Code formatting and PEP 8 compliance checks | Pattern suggestions for variable naming and line breaks |
-| Initial wording of the stack-justification paragraph | First draft of the four-sentence rationale, later edited |
-| Markdown formatting of the README results tables | Initial layout, with all metric values produced by the author's execution |
 
 **Own work (no AI assistance):**
 
