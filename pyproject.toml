@@ -1,16 +1,21 @@
 [project]
 name = "ml-exam"
 version = "0.1.0"
-description = "Mid-term practical evaluation — linear & logistic regression"
+description = "Mid-Term Practical Evaluation — Linear & Logistic Regression on Wine Quality"
+authors = [{ name = "Daniel Sozoranga" }]
+readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+
 dependencies = [
-    "pandas>=2.2.0",
-    "scikit-learn>=1.5.0,<1.8.0",
-    "matplotlib>=3.8.0",
-    "seaborn>=0.13.0",
-    "numpy>=1.26.0",
-    "ipykernel>=6.29.0",
-    "jupyter>=1.0.0",
+    "pandas>=2.2,<4.0",
+    "numpy>=1.26,<3.0",
+    "scikit-learn>=1.5,<2.0",
+    "matplotlib>=3.9,<4.0",
+    "seaborn>=0.13,<1.0",
+    "jupyter>=1.1,<2.0",
+    "ipykernel>=6.29,<7.0",
+    "nbformat>=5.10,<6.0",
 ]
 
 [build-system]
