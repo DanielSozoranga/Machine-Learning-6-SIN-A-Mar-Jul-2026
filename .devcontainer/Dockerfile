@@ -16,11 +16,10 @@ WORKDIR /app
 
 RUN uv venv ds
 
-COPY .devcontainer/requirements.txt .
+COPY requirements.txt .
 
 RUN uv pip install --python ds/bin/python -r requirements.txt
 
-# Registrar kernel ds para que VS Code lo auto-seleccione sin intervención manual
 RUN ds/bin/python -m ipykernel install \
         --prefix=/usr/local \
         --name ds \
